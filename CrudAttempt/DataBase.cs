@@ -44,6 +44,7 @@ namespace CrudAttempt
             string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
+
                 connection.Open();
 
                 string insertQuery = "INSERT INTO Student (Name, SurName, ClassID, TeacherID, MidTerm, Final) VALUES (@Name, @SurName, @ClassID, @TeacherID, @Midterm, @Final)";
