@@ -9,34 +9,6 @@ using System.Security.Cryptography;
 
 namespace CrudAttempt
 {
-    /* internal class DataBase
-     {
-         private SQLiteConnection connection;
-
-         public DataBase()
-         {
-             string databasePath = @"D:\DataBases\CrudData.db";
-             connection = new SQLiteConnection($"Data Source={databasePath};Version=3;");
-             try
-             {
-                 connection.Open();
-                 Console.WriteLine("Bağlandı Koç");
-             }
-             catch (Exception ex)
-             {
-                 Console.WriteLine($"Error: {ex.Message}");
-             }
-         }
-
-         public void CloseConnection() 
-         {
-             if (connection.State == ConnectionState.Open)
-             {
-                 connection.Close();
-             }
-         }
-     } */
-
     public class Student
     {
         public void InsertStudent(string Name, string SurName, int ClassID, int TeacherID, int MidTerm, int Final)
@@ -487,7 +459,65 @@ namespace CrudAttempt
             Lesson lesson = new Lesson();
             Student student = new Student();
 
-            // teacher.UpdateTeacher(1, "Kali", "Gürkaraman");
+            string tableText = "İşlem yağacağınız tabloyu seçiniz\n"
+                                + "Student\n"
+                                + "Lesson\n"
+                                + "Teacher";
+
+            Console.WriteLine(tableText);
+            Console.Write("Tablo: ");
+            string tableChoice = Console.ReadLine();
+
+            switch (tableChoice)
+            {
+                case "Student":
+                    Console.WriteLine("Öğrenci tablosunu seçtiniz.");
+                    break;
+                case "Lesson":
+                    Console.WriteLine("Ders tablosunu seçtiniz.");
+                    break;
+                case "Teacher":
+                    Console.WriteLine("Öğretmen tablosunu seçtiniz.");
+                    break;
+                default:
+                    Console.WriteLine("Geçersiz tablo seçimi.");
+                    return;
+            }
+
+            string operatorText = "Yapacağınız işlemi seçiniz\n"
+                        + "Tabloya yeni kayıt ekleme: 1\n"
+                        + "Tablodan kayıt güncelleme: 2\n"
+                        + "Tablodan kayıt silme: 3\n"
+                        + "Tablodan kayıt gösterme: 4\n"
+                        + "Tablonun tamamını gösterme: 5";
+
+            Console.WriteLine(operatorText);
+            Console.Write("İşlem: ");
+            int operatorChoice = Convert.ToInt32(Console.ReadLine());
+
+            switch (operatorChoice)
+            {
+                case 1:
+                    Console.WriteLine("Yeni kayıt ekleme");
+                    break;
+                case 2:
+                    Console.WriteLine("Kayıt güncelleme");
+                    break;
+                case 3:
+                    Console.WriteLine("Kayıt silme");
+                    break;
+                case 4:
+                    Console.WriteLine("Kayıt gösterme");
+                    break;
+                case 5:
+                    Console.WriteLine("Tabloyu gösterme");
+                    break;
+                default:
+                    Console.WriteLine("Geçersiz işlem seçtiniz");
+                    return;
+            }
+
+            // teacher.UpdateTeacher(1, "kali", "gürkaraman");
             // teacher.InsertTeacher("Hakkı", "Bulut");
             // teacher.GetTeacherByID(1);
             // teacher.GetAllTeacher();
