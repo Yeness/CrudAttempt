@@ -11,9 +11,9 @@ namespace CrudAttempt
 {
     public class Student
     {
+        string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
         public void InsertStudent(string Name, string SurName, int ClassID, int TeacherID, int MidTerm, int Final)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
 
@@ -45,7 +45,6 @@ namespace CrudAttempt
 
         public void GetAllStudent()
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -75,7 +74,6 @@ namespace CrudAttempt
 
         public void GetStudentByID(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -111,7 +109,6 @@ namespace CrudAttempt
 
         public void UpdateStudent(int ID, string Name, string SurName, int ClassID, int TeacherID, int MidTerm, int Final)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -142,7 +139,6 @@ namespace CrudAttempt
 
         public void DeleteStudent(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -169,9 +165,9 @@ namespace CrudAttempt
 
     public class Lesson
     {
+        string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
         public void InsertClass(string Name, int TeacherID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -198,7 +194,6 @@ namespace CrudAttempt
 
         public void GetAllClass()
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -224,7 +219,6 @@ namespace CrudAttempt
 
         public void GetClassByID(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -256,7 +250,6 @@ namespace CrudAttempt
 
         public void UpdateClass(int ID, string Name, int TeacherID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connect = new SQLiteConnection(databasePath))
             {
                 connect.Open();
@@ -284,7 +277,6 @@ namespace CrudAttempt
 
         public void DeleteClass(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -311,9 +303,9 @@ namespace CrudAttempt
 
     public class Teacher
     {
+        string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
         public void InsertTeacher(string Name, string SurName)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -340,7 +332,6 @@ namespace CrudAttempt
 
         public void GetAllTeacher()
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -366,7 +357,6 @@ namespace CrudAttempt
 
         public void GetTeacherByID(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -398,7 +388,6 @@ namespace CrudAttempt
 
         public void UpdateTeacher(int ID, string Name, string SurName)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -426,7 +415,6 @@ namespace CrudAttempt
 
         public void DeleteTeacher(int ID)
         {
-            string databasePath = @"Data Source=D:\DataBases\CrudData.db;Version=3;";
             using (SQLiteConnection connection = new SQLiteConnection(databasePath))
             {
                 connection.Open();
@@ -452,13 +440,9 @@ namespace CrudAttempt
     }
 
     class Program
-    {
-        static void Main(string[] args)
+    {   
+        public string tableChoice()
         {
-            Teacher teacher = new Teacher();
-            Lesson lesson = new Lesson();
-            Student student = new Student();
-
             string tableText = "İşlem yağacağınız tabloyu seçiniz\n"
                                 + "Student\n"
                                 + "Lesson\n"
@@ -472,18 +456,22 @@ namespace CrudAttempt
             {
                 case "Student":
                     Console.WriteLine("Öğrenci tablosunu seçtiniz.");
-                    break;
+                    return "Student";
                 case "Lesson":
                     Console.WriteLine("Ders tablosunu seçtiniz.");
-                    break;
+                    return "Lesson";
                 case "Teacher":
                     Console.WriteLine("Öğretmen tablosunu seçtiniz.");
-                    break;
+                    return "Teacher";
                 default:
                     Console.WriteLine("Geçersiz tablo seçimi.");
-                    return;
+                    return null;
             }
 
+        }
+
+        public int operatorChoice()
+        {
             string operatorText = "Yapacağınız işlemi seçiniz\n"
                         + "Tabloya yeni kayıt ekleme: 1\n"
                         + "Tablodan kayıt güncelleme: 2\n"
@@ -499,23 +487,42 @@ namespace CrudAttempt
             {
                 case 1:
                     Console.WriteLine("Yeni kayıt ekleme");
-                    break;
+                    return 1;
                 case 2:
                     Console.WriteLine("Kayıt güncelleme");
-                    break;
+                    return 2;
                 case 3:
                     Console.WriteLine("Kayıt silme");
-                    break;
+                    return 3;
                 case 4:
                     Console.WriteLine("Kayıt gösterme");
-                    break;
+                    return 4;
                 case 5:
                     Console.WriteLine("Tabloyu gösterme");
-                    break;
+                    return 5;
                 default:
                     Console.WriteLine("Geçersiz işlem seçtiniz");
-                    return;
+                    return -1;
             }
+        }
+        static void Main(string[] args)
+        {
+            Teacher teacher = new Teacher();
+            Lesson lesson = new Lesson();
+            Student student = new Student();
+            Program program = new Program();
+
+            string selectedTable;
+            do
+            {
+                selectedTable = program.tableChoice();
+            } while (selectedTable == null);
+
+            int selectedOperator;
+            do
+            {
+                selectedOperator = program.operatorChoice();
+            } while (selectedOperator == -1);
 
             // teacher.UpdateTeacher(1, "kali", "gürkaraman");
             // teacher.InsertTeacher("Hakkı", "Bulut");
