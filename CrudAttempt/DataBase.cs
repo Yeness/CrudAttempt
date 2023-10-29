@@ -613,7 +613,6 @@ namespace CrudAttempt
                                 student.GetAllStudent();
                                 break;
                         }
-                        //program.FinishProject();
                         break;
                     case "Lesson":
                         switch (selectedOperator)
@@ -652,7 +651,6 @@ namespace CrudAttempt
                                 lesson.GetAllClass();
                                 break;
                         }
-                        //program.FinishProject();
                         break;
                     case "Teacher":
                         switch (selectedOperator)
