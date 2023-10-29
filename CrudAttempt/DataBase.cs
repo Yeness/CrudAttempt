@@ -14,7 +14,7 @@ namespace CrudAttempt
 
                 string insertQuery = "INSERT INTO Student (Name, SurName, ClassID, TeacherID, MidTerm, Final) VALUES (@Name, @SurName, @ClassID, @TeacherID, @Midterm, @Final)";
 
-                using (SQLiteCommand cmd = new SQLiteCommand(insertQuery, connection))
+                using (SQLiteCommand cmd = new SQLiteCommand(@insertQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@Name", Name);
                     cmd.Parameters.AddWithValue("@SurName", SurName);
@@ -108,7 +108,7 @@ namespace CrudAttempt
 
                 string updateQuery = "UPDATE Student SET Name = @Name, SurName = @SurName, ClassID = @ClassID, TeacherID = @TeacherID, MidTerm = @MidTerm, Final = @Final WHERE ID = @ID";
 
-                using (SQLiteCommand cmd = new SQLiteCommand(updateQuery, connection))
+                using (SQLiteCommand cmd = new SQLiteCommand(@updateQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@Name", Name);
                     cmd.Parameters.AddWithValue("@SurName", SurName);
@@ -138,7 +138,7 @@ namespace CrudAttempt
 
                 string deleteQuery = "DELETE FROM Student WHERE ID = @ID";
 
-                using (SQLiteCommand cmd = new SQLiteCommand(deleteQuery, connection))
+                using (SQLiteCommand cmd = new SQLiteCommand(@deleteQuery, connection))
                 {
                     cmd.Parameters.AddWithValue("@ID", ID);
 
@@ -434,7 +434,33 @@ namespace CrudAttempt
 
     class Program
     {
-        public string tableChoice()
+        static bool projectRun;
+        public bool FinishProject()
+        {
+
+            string askRun = "Devam etmek istiyor musunuz ?\n"
+                            + "Evet = 1\n"
+                            + "Hayır = 2";
+            Console.WriteLine(askRun);
+            Console.Write("Cevabınız: ");
+            int userInput = Convert.ToInt32(Console.ReadLine());
+
+            if (userInput == 1)
+            {
+                projectRun = true;
+            }
+            else if (userInput == 2)
+            {
+                projectRun = false;
+            }
+            else
+            {
+                Console.WriteLine("Geçersiz cevap. Lütfen 1 veya 2 girin.");
+                return FinishProject();
+            }
+            return projectRun;
+        }
+        public string TableChoice()
         {
             string tableText = "İşlem yağacağınız tabloyu seçiniz\n"
                                 + "Student\n"
@@ -443,9 +469,9 @@ namespace CrudAttempt
 
             Console.WriteLine(tableText);
             Console.Write("Tablo: ");
-            string tableChoice = Console.ReadLine();
+            string TableChoice = Console.ReadLine();
 
-            switch (tableChoice)
+            switch (TableChoice)
             {
                 case "Student":
                     Console.WriteLine("Öğrenci tablosunu seçtiniz.");
@@ -463,7 +489,7 @@ namespace CrudAttempt
 
         }
 
-        public int operatorChoice()
+        public int OperatorChoice()
         {
             string operatorText = "Yapacağınız işlemi seçiniz\n"
                         + "Tabloya yeni kayıt ekleme: 1\n"
@@ -474,9 +500,9 @@ namespace CrudAttempt
 
             Console.WriteLine(operatorText);
             Console.Write("İşlem: ");
-            int operatorChoice = Convert.ToInt32(Console.ReadLine());
+            int OperatorChoice = Convert.ToInt32(Console.ReadLine());
 
-            switch (operatorChoice)
+            switch (OperatorChoice)
             {
                 case 1:
                     Console.WriteLine("Yeni kayıt ekleme");
@@ -518,151 +544,157 @@ namespace CrudAttempt
             string teacherName;
             string teacherSurname;
 
-            string selectedTable;
             do
             {
-                selectedTable = program.tableChoice();
-            } while (selectedTable == null);
+                string selectedTable;
+                do
+                {
+                    selectedTable = program.TableChoice();
+                } while (selectedTable == null);
 
-            int selectedOperator;
-            do
-            {
-                selectedOperator = program.operatorChoice();
-            } while (selectedOperator == -1);
+                int selectedOperator;
+                do
+                {
+                    selectedOperator = program.OperatorChoice();
+                } while (selectedOperator == -1);
 
-            switch (selectedTable)
-            {
-                case "Student":
-                    switch (selectedOperator)
-                    {
-                        case 1:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğrenci Adı: ");
-                            studentName = Console.ReadLine();
-                            Console.Write("Öğrenci Soyadı: ");
-                            studentSurname = Console.ReadLine();
-                            Console.Write("Öğrenci Ders ID'si: ");
-                            classID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Öğrenci Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Vize Notu: ");
-                            midTerm = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Final Notu: ");
-                            final = Convert.ToInt32(Console.ReadLine());
-                            student.InsertStudent(studentName, studentSurname, classID, teacherID, midTerm, final);
-                            break;
-                        case 2:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğrenci ID'si: ");
-                            studentID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Öğrenci Adı: ");
-                            studentName = Console.ReadLine();
-                            Console.Write("Öğrenci Soyadı: ");
-                            studentSurname = Console.ReadLine();
-                            Console.Write("Öğrenci Ders ID'si: ");
-                            classID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Öğrenci Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Vize Notu: ");
-                            midTerm = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Final Notu: ");
-                            final = Convert.ToInt32(Console.ReadLine());
-                            student.UpdateStudent(studentID, studentName, studentSurname, classID, teacherID, midTerm, final);
-                            break;
-                        case 3:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğrenci ID'si: ");
-                            studentID = Convert.ToInt32(Console.ReadLine());
-                            student.DeleteStudent(studentID);
-                            break;
-                        case 4:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğrenci ID'si: ");
-                            studentID = Convert.ToInt32(Console.ReadLine());
-                            student.GetStudentByID(studentID);
-                            break;
-                        case 5:
-                            student.GetAllStudent();
-                            break;
-                    }
-                    break;
-                case "Lesson":
-                    switch (selectedOperator)
-                    {
-                        case 1:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Ders Adı: ");
-                            className = Console.ReadLine();
-                            Console.Write("Ders'in Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            lesson.InsertClass(className, teacherID);
-                            break;
-                        case 2:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Ders ID'si: ");
-                            classID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Ders Adı: ");
-                            className = Console.ReadLine();
-                            Console.Write("Ders'in Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            lesson.UpdateClass(classID, className, teacherID);
-                            break;
-                        case 3:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Ders ID'si: ");
-                            classID = Convert.ToInt32(Console.ReadLine());
-                            lesson.DeleteClass(classID);
-                            break;
-                        case 4:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Ders ID'si: ");
-                            classID = Convert.ToInt32(Console.ReadLine());
-                            lesson.GetClassByID(classID);
-                            break;
-                        case 5:
-                            lesson.GetAllClass();
-                            break;
-                    }
-                    break;
-                case "Teacher":
-                    switch (selectedOperator)
-                    {
-                        case 1:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğretmen Adı: ");
-                            teacherName = Console.ReadLine();
-                            Console.Write("Öğretmen Soyadı: ");
-                            teacherSurname = Console.ReadLine();
-                            teacher.InsertTeacher(teacherName, teacherSurname);
-                            break;
-                        case 2:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            Console.Write("Öğretmen Adı: ");
-                            teacherName = Console.ReadLine();
-                            Console.Write("Öğretmen Soyadı: ");
-                            teacherSurname = Console.ReadLine();
-                            teacher.UpdateTeacher(teacherID, teacherName, teacherSurname);
-                            break;
-                        case 3:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            teacher.DeleteTeacher(teacherID);
-                            break;
-                        case 4:
-                            Console.WriteLine("Sırayla değerleri giriniz");
-                            Console.Write("Öğretmen ID'si: ");
-                            teacherID = Convert.ToInt32(Console.ReadLine());
-                            teacher.GetTeacherByID(teacherID);
-                            break;
-                        case 5:
-                            teacher.GetAllTeacher();
-                            break;
-                    }
-                    break;
-            }
+                switch (selectedTable)
+                {
+                    case "Student":
+                        switch (selectedOperator)
+                        {
+                            case 1:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğrenci Adı: ");
+                                studentName = Console.ReadLine();
+                                Console.Write("Öğrenci Soyadı: ");
+                                studentSurname = Console.ReadLine();
+                                Console.Write("Öğrenci Ders ID'si: ");
+                                classID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Öğrenci Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Vize Notu: ");
+                                midTerm = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Final Notu: ");
+                                final = Convert.ToInt32(Console.ReadLine());
+                                student.InsertStudent(studentName, studentSurname, classID, teacherID, midTerm, final);
+                                break;
+                            case 2:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğrenci ID'si: ");
+                                studentID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Öğrenci Adı: ");
+                                studentName = Console.ReadLine();
+                                Console.Write("Öğrenci Soyadı: ");
+                                studentSurname = Console.ReadLine();
+                                Console.Write("Öğrenci Ders ID'si: ");
+                                classID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Öğrenci Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Vize Notu: ");
+                                midTerm = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Final Notu: ");
+                                final = Convert.ToInt32(Console.ReadLine());
+                                student.UpdateStudent(studentID, studentName, studentSurname, classID, teacherID, midTerm, final);
+                                break;
+                            case 3:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğrenci ID'si: ");
+                                studentID = Convert.ToInt32(Console.ReadLine());
+                                student.DeleteStudent(studentID);
+                                break;
+                            case 4:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğrenci ID'si: ");
+                                studentID = Convert.ToInt32(Console.ReadLine());
+                                student.GetStudentByID(studentID);
+                                break;
+                            case 5:
+                                student.GetAllStudent();
+                                break;
+                        }
+                        //program.FinishProject();
+                        break;
+                    case "Lesson":
+                        switch (selectedOperator)
+                        {
+                            case 1:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Ders Adı: ");
+                                className = Console.ReadLine();
+                                Console.Write("Ders'in Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                lesson.InsertClass(className, teacherID);
+                                break;
+                            case 2:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Ders ID'si: ");
+                                classID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Ders Adı: ");
+                                className = Console.ReadLine();
+                                Console.Write("Ders'in Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                lesson.UpdateClass(classID, className, teacherID);
+                                break;
+                            case 3:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Ders ID'si: ");
+                                classID = Convert.ToInt32(Console.ReadLine());
+                                lesson.DeleteClass(classID);
+                                break;
+                            case 4:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Ders ID'si: ");
+                                classID = Convert.ToInt32(Console.ReadLine());
+                                lesson.GetClassByID(classID);
+                                break;
+                            case 5:
+                                lesson.GetAllClass();
+                                break;
+                        }
+                        //program.FinishProject();
+                        break;
+                    case "Teacher":
+                        switch (selectedOperator)
+                        {
+                            case 1:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğretmen Adı: ");
+                                teacherName = Console.ReadLine();
+                                Console.Write("Öğretmen Soyadı: ");
+                                teacherSurname = Console.ReadLine();
+                                teacher.InsertTeacher(teacherName, teacherSurname);
+                                break;
+                            case 2:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("Öğretmen Adı: ");
+                                teacherName = Console.ReadLine();
+                                Console.Write("Öğretmen Soyadı: ");
+                                teacherSurname = Console.ReadLine();
+                                teacher.UpdateTeacher(teacherID, teacherName, teacherSurname);
+                                break;
+                            case 3:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                teacher.DeleteTeacher(teacherID);
+                                break;
+                            case 4:
+                                Console.WriteLine("Sırayla değerleri giriniz");
+                                Console.Write("Öğretmen ID'si: ");
+                                teacherID = Convert.ToInt32(Console.ReadLine());
+                                teacher.GetTeacherByID(teacherID);
+                                break;
+                            case 5:
+                                teacher.GetAllTeacher();
+                                break;
+                        }
+                        break;
+                }
+                program.FinishProject();
+            } while (projectRun == true);
         }
     }
 }
